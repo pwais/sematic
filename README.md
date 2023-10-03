@@ -142,8 +142,11 @@ issue"](https://github.com/sematic-ai/sematic/issues?q=is%3Aopen+is%3Aissue+labe
 and get in touch with us on [Discord](https://discord.gg/4KZJ6kYVax).
 
 
-![scarf pixel](https://static.scarf.sh/a.png?x-pxid=80c3593f-25a0-4b06-90a1-0b670a6567d4)
+### Quickstart Using [devcontainer](https://containers.dev/)
 
+Use this recipe for starting a Dockerized development environment from the terminal of a linux-based
+machine with `docker` installed.  For wider IDE support, see the 
+[official devcontainer docs](https://containers.dev/supporting).
 
 ```bash
 mycomputer %% sudo apt-get install -y npm docker-compose
@@ -155,7 +158,7 @@ mycomputer %% cd sematic
 
 mycomputer %% mkdir -p ~/.cache/bazel/
 mycomputer %% chmod -R 777 ~/.cache/bazel/
-mycomputer %% DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1devcontainer up --workspace-folder .
+mycomputer %% DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 devcontainer up --workspace-folder .
 mycomputer %% devcontainer exec --workspace-folder . bash
 
 indevcontainer $ bazel build //...
@@ -165,3 +168,5 @@ indevcontainer $ exit
 
 mycomputer %% docker rm -f sematic_devcontainer_sematic-dev_1
 ```
+
+![scarf pixel](https://static.scarf.sh/a.png?x-pxid=80c3593f-25a0-4b06-90a1-0b670a6567d4)
