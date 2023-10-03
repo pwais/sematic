@@ -34,7 +34,7 @@ class LocalStorageSettingsVar(AbstractPluginSettingsVar):
 class LocalStorage(AbstractStorage, AbstractPlugin):
     """
     A local storage implementation of the `AbstractStorage` interface. Values
-    are stores in the data directory of the Sematic directory, typically at
+    are stored in the data directory of the Sematic directory, typically at
     `~/.sematic/data`.
     """
 

@@ -48,7 +48,7 @@ A: The pipe mechanisms for the "multiprocess" module assumes that the parent pro
 
 
 DEFAULT_LOG_UPLOAD_INTERVAL_SECONDS = 10
-MAX_LINES_PER_LOG_FILE = 1000
+MAX_LINES_PER_LOG_FILE = 1000 # todo make bigger
 _LAST_NON_EMPTY_DELTA_TEMPLATE = "{}.previous"
 _TERMINATION_CHAR = chr(ascii.EOT)  # EOT => End Of Transmission
 
