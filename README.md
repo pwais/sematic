@@ -143,3 +143,25 @@ and get in touch with us on [Discord](https://discord.gg/4KZJ6kYVax).
 
 
 ![scarf pixel](https://static.scarf.sh/a.png?x-pxid=80c3593f-25a0-4b06-90a1-0b670a6567d4)
+
+
+```bash
+mycomputer %% sudo apt-get install -y npm docker-compose
+mycomputer %% sudo npm install -g n
+mycomputer %% sudo n stable
+mycomputer %% sudo npm install -g @devcontainers/cli
+mycomputer %% git clone https://github.com/sematic-ai/sematic sematic
+mycomputer %% cd sematic
+
+mycomputer %% mkdir -p ~/.cache/bazel/
+mycomputer %% chmod -R 777 ~/.cache/bazel/
+mycomputer %% DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1devcontainer up --workspace-folder .
+mycomputer %% devcontainer exec --workspace-folder . bash
+
+indevcontainer $ bazel build //...
+indevcontainer $ bazel test //...
+
+indevcontainer $ exit
+
+mycomputer %% docker rm -f sematic_devcontainer_sematic-dev_1
+```

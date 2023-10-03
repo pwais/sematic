@@ -1,0 +1,27 @@
+version: "3.3"
+
+services:
+  sematic-dev:
+    #shm_size: '12gb'
+    image: sematic-dev:latest
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile.dev
+    stdin_open: true
+    tty: true
+    #environment:
+    #  NVIDIA_DRIVER_CAPABILITIES: compute,utility,graphics
+    #ports:
+    #  - "5000:5000"
+    volumes:
+      - ../:/workspace/
+      - ~/.cache/bazel:/home/sematicdev/.cache/bazel
+    working_dir: /workspace/
+    command: /bin/bash
+    #deploy:
+    #  resources:
+    #    reservations:
+    #      devices:
+    #        - driver: nvidia
+    #          count: 1
+    #          capabilities: [ gpu ]
