@@ -38,6 +38,7 @@ from sematic.resolvers.resource_requirements import (
     KubernetesResourceRequirements,
     KubernetesSecretMount,
     ResourceRequirements,
+    KubernetesHostMount,
 )
 from sematic.scheduling.job_details import (
     JobDetails,
@@ -561,6 +562,11 @@ def _schedule_kubernetes_job(
             volumes.append(volume)
             volume_mounts.append(mount)
 
+        for host_mount_spec in resource_requirements.kubernetes.host_mounts:
+            volume, mount = _to_volume_mount(host_mount_spec)
+            volumes.append(volume)
+            volume_mounts.append(mount)
+
         if resource_requirements.kubernetes.security_context is not None:
             allow_customization = get_bool_server_setting(
                 ServerSettingsVar.ALLOW_CUSTOM_SECURITY_CONTEXTS, False
@@ -791,6 +797,27 @@ def schedule_run_job(
         args=args,
     )
     return job
+
+
+def _to_volume_mount(spec: KubernetesHostMount) -> Optional[Tuple[V1Volume, V1VolumeMount]]:
+  
+  volume_name = f'sematic_host_mount_{str(uuid.uuid4())}'
+
+  volume = V1Volume(
+      name=volume_name,
+      host_path=kubernetes.client.V1HostPathVolumeSource(
+          path=spec.host_path,
+          type=spec.host_path_type,
+      )
+  )
+
+  mount = V1VolumeMount(
+      mount_path=spec.mount_path,
+      name=volume_name,
+      read_only=spec.read_only,
+  )
+
+  return volume, mount
 
 
 def _volume_secrets(

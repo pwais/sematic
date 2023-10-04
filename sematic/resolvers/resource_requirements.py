@@ -244,6 +244,16 @@ class KubernetesSecurityContext:
 
 
 @dataclass(frozen=True)
+class KubernetesHostMount:
+    """TODO
+    """
+
+    read_only: bool = False
+    host_path: str
+    host_path_type: str = ''
+    mount_path: str
+
+@dataclass(frozen=True)
 class KubernetesResourceRequirements:
     """Information on the Kubernetes resources required.
 
@@ -277,6 +287,9 @@ class KubernetesResourceRequirements:
         The Kubernetes security context the job will run with. Note that this
         field will only be respected if ALLOW_CUSTOM_SECURITY_CONTEXTS has been
         enabled by your Sematic administrator.
+    host_mounts: List[KubernetesHostMount]
+        Mount these host directories in the worker pod; useful for mutable
+        scratch space, docker-in-docker, etc.
     """
 
     node_selector: Dict[str, str] = field(default_factory=dict)
@@ -285,6 +298,7 @@ class KubernetesResourceRequirements:
     tolerations: List[KubernetesToleration] = field(default_factory=list)
     mount_expanded_shared_memory: bool = field(default=False)
     security_context: Optional[KubernetesSecurityContext] = None
+    host_mounts : List[KubernetesHostMount] = field(default_factory=list)
 
     def clone(self) -> "KubernetesResourceRequirements":
         """Deep copy these requirements."""
@@ -294,6 +308,7 @@ class KubernetesResourceRequirements:
             node_selector=dict(self.node_selector),
             requests=dict(self.requests),
             tolerations=[t for t in self.tolerations],
+            host_mounts=[m for m in self.host_mounts],
         )
 
 
