@@ -248,10 +248,10 @@ class KubernetesHostMount:
     """TODO
     """
 
-    read_only: bool = False
     host_path: str
-    host_path_type: str = ''
     mount_path: str
+    host_path_type: Optional[str] = None
+    read_only: bool = field(default=False)
 
 @dataclass(frozen=True)
 class KubernetesResourceRequirements:

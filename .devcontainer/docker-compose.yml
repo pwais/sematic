@@ -8,9 +8,11 @@ services:
       dockerfile: ./docker/Dockerfile.dev
     stdin_open: true
     tty: true
+    privileged: true
     volumes:
       - ../:/workspace/
       - ~/.cache/bazel:/home/sematicdev/.cache/bazel
+      - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /workspace/
     command: /bin/bash
 

@@ -1,5 +1,6 @@
 SHELL=/bin/bash
 
+DOCKER_REPO ?= sematic
 UNAME_S := $(shell uname -s)
 RED := \033[0;31m
 NO_COLOR := \033[1;0m
@@ -87,10 +88,10 @@ release:
 release-server:
 	rm -f docker/*.whl
 	cp bazel-bin/sematic/*.whl docker/
-	cd docker; docker build --build-arg EXTRA=default -t sematic/sematic-server:${TAG} -f Dockerfile.server .
-	docker push sematic/sematic-server:${TAG}
-	cd docker; docker build --build-arg EXTRA=all -t sematic/sematic-server-ee:${TAG} -f Dockerfile.server .
-	docker push sematic/sematic-server-ee:${TAG}
+	cd docker; docker build --build-arg EXTRA=default -t ${DOCKER_REPO}/sematic-server:${TAG} -f Dockerfile.server .
+	docker push ${DOCKER_REPO}/sematic-server:${TAG}
+	#cd docker; docker build --build-arg EXTRA=all -t sematic/sematic-server-ee:${TAG} -f Dockerfile.server .
+	#docker push sematic/sematic-server-ee:${TAG}
 
 test:
 	bazel test //sematic/... --test_tag_filters=nocov --test_output=all

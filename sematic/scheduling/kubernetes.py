@@ -596,13 +596,13 @@ def _schedule_kubernetes_job(
             for toleration in resource_requirements.kubernetes.tolerations
         ]
 
-        logger.debug("kubernetes node_selector %s", node_selector)
-        logger.debug("kubernetes resource requests %s", resource_requests)
-        logger.debug("kubernetes volumes: %s", volumes)
-        logger.debug("kubernetes volume mounts: %s", volume_mounts)
-        logger.debug("kubernetes environment secrets: %s", secret_env_vars)
-        logger.debug("kubernetes tolerations: %s", tolerations)
-        logger.debug("kubernetes security context: %s", security_context)
+        logger.info("kubernetes node_selector %s", node_selector)
+        logger.info("kubernetes resource requests %s", resource_requests)
+        logger.info("kubernetes volumes: %s", volumes)
+        logger.info("kubernetes volume mounts: %s", volume_mounts)
+        logger.info("kubernetes environment secrets: %s", secret_env_vars)
+        logger.info("kubernetes tolerations: %s", tolerations)
+        logger.info("kubernetes security context: %s", security_context)
 
     pod_name_env_var = kubernetes.client.V1EnvVar(  # type: ignore
         name=KUBERNETES_POD_NAME_ENV_VAR,
@@ -801,7 +801,8 @@ def schedule_run_job(
 
 def _to_volume_mount(spec: KubernetesHostMount) -> Optional[Tuple[V1Volume, V1VolumeMount]]:
   
-  volume_name = f'sematic_host_mount_{str(uuid.uuid4())}'
+  # NB: must be a RFC 1123 label! Max 64 chars
+  volume_name = f'sematic-host-mount-{uuid.uuid4().hex[:6]}'
 
   volume = V1Volume(
       name=volume_name,

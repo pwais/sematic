@@ -20,7 +20,7 @@ RUN \
   apt-get install -y bazel default-jre default-jdk xvfb libgtk-3-0 libgtk-3-0 libgbm-dev
 ENV JAVA_HOME=/usr/lib/jvm/default-java
 
-# Install node.js, python, and other core dependencies
+# Install node.js, python, docker client, and other core dependencies
 RUN \
   --mount=type=cache,target=/var/cache/apt \
   apt-get update && \
@@ -31,6 +31,8 @@ RUN \
   --mount=type=cache,target=/var/cache/apt \
   apt-get update && \
   apt-get install -y \
+    build-essential \
+    docker.io \
     git \
     libmagic1 \
     sqlite3 \
@@ -38,12 +40,20 @@ RUN \
     python3-pip \
     python-dev-is-python3
 
+# Install sematic dev deps
+WORKDIR /tmp/sematic-dev-setup
+COPY Makefile ./Makefile
+RUN mkdir -p requirements
+COPY requirements/ci-requirements.txt ./requirements/ci-requirements.txt
+RUN make install-dev-deps
+
 # Bazel python requires a non-root user, so create one and set it up
 RUN \
   --mount=type=cache,target=/var/cache/apt \
   apt-get update && apt-get install -y sudo
 RUN useradd -m -d /home/sematicdev -g root -G sudo -u ${USER_ID} sematicdev
 RUN usermod -aG sudo sematicdev
+RUN usermod -aG docker sematicdev
 # Set user password
 RUN echo "sematicdev:sematicdev" | chpasswd
 # Ensure sudo group users are not asked for a password when using sudo command by ammending sudoers file
@@ -52,6 +62,9 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # Switch to new uer and workdir.
 USER ${USER_ID}
 WORKDIR /home/sematicdev
+
+# Ensure that .cache is owned by sematicdev
+RUN mkdir -p /home/sematicdev/.cache
 
 ENV PATH="${PATH}:/home/sematicdev/.local/bin"
 SHELL ["/bin/bash", "-c"]
