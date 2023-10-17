@@ -545,6 +545,7 @@ def _schedule_kubernetes_job(
     secret_env_vars = []
     tolerations = []
     security_context = None
+    host_ipc = False
     image_pull_secrets = _get_image_pull_secrets()
 
     if resource_requirements is not None:
@@ -595,6 +596,10 @@ def _schedule_kubernetes_job(
             )
             for toleration in resource_requirements.kubernetes.tolerations
         ]
+
+        if resource_requirements.kubernetes.use_host_ipc:
+            host_ipc = True
+          
 
         logger.info("kubernetes node_selector %s", node_selector)
         logger.info("kubernetes resource requests %s", resource_requests)
@@ -671,6 +676,7 @@ def _schedule_kubernetes_job(
                         )
                     ],
                     volumes=volumes,
+                    host_ipc=host_ipc,
                     tolerations=tolerations,
                     restart_policy="Never",
                     service_account_name=service_account,

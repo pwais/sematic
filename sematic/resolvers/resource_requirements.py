@@ -283,6 +283,9 @@ class KubernetesResourceRequirements:
         memory-backed tmpfs that expands up to half of the available memory file is used
         instead. Defaults to False. If that file is expanded to more than that limit
         (through external action), then the pod will be terminated.
+    use_host_ipc: bool
+        As an alternative to `mount_expanded_shared_memory`, use Docker ipc=host mode
+        which will use the host's shared memory limits and namespace.
     security_context: Optional[KubernetesSecurityContext]
         The Kubernetes security context the job will run with. Note that this
         field will only be respected if ALLOW_CUSTOM_SECURITY_CONTEXTS has been
@@ -297,6 +300,7 @@ class KubernetesResourceRequirements:
     secret_mounts: KubernetesSecretMount = field(default_factory=KubernetesSecretMount)
     tolerations: List[KubernetesToleration] = field(default_factory=list)
     mount_expanded_shared_memory: bool = field(default=False)
+    use_host_ipc: bool = field(default=False)
     security_context: Optional[KubernetesSecurityContext] = None
     host_mounts : List[KubernetesHostMount] = field(default_factory=list)
 
