@@ -11,7 +11,7 @@ aws:
   # NB: When using a custom S3-compatible storage, you may omit the
   # bucket_region parameter above
   # endpoint_url: "https://my-s3-compatible-storage"
-  # tls_verify: false
+  # tls_verify: "false"
 
   # For supplying your AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from
   # an existing secret.
