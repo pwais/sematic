@@ -176,7 +176,7 @@ $ kubectl create secret generic <S3 SECRET NAME> \
     --from-literal "AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>"
 ```
 
-Then in your yelm `values.yaml` set `aws.secret.enabled` to `true` and 
+Then in your helm `values.yaml` set `aws.secret.enabled` to `true` and 
 `aws.secret.name` to `<S3 SECRET NAME>`.
 
 ###### Custom S3-compatible storage
